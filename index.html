@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Umar Ahmad — Data Engineer</title>
+<style>
+  :root {
+    --bg: #080c14;
+    --bg2: #0d1221;
+    --bg3: #111827;
+    --card: #0f1729;
+    --border: rgba(0,255,200,0.10);
+    --border2: rgba(0,255,200,0.22);
+    --cyan: #00ffc8;
+    --cyan2: #00c9a0;
+    --purple: #a855f7;
+    --purple2: #7c3aed;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --green: #22c55e;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --mono: 'Courier New', monospace;
+    --sans: 'Segoe UI', system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    overflow-x: hidden;
+  }
+
+  /* grid bg */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,200,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,200,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* subtle radial glow behind hero */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -20vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 600px;
+    background: radial-gradient(ellipse at center, rgba(0,255,200,0.04) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(8,12,20,0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: border-color 0.3s;
+  }
+
+  nav.scrolled { border-bottom-color: var(--border2); }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 15px;
+    color: var(--cyan);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--text2); }
+  .nav-logo .cursor-nav {
+    display: inline-block;
+    width: 7px; height: 13px;
+    background: var(--cyan);
+    vertical-align: middle;
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+  }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text2);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0; right: 0;
+    height: 1px;
+    background: var(--cyan);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* ── SCROLL FADE IN ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── SECTIONS ── */
+  section {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 6vw 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    max-width: 100%;
+    padding: 0 6vw;
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+  }
+
+  .hero-left { flex: 1; }
+
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--cyan);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.2s forwards;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 28px; height: 1px;
+    background: var(--cyan);
+  }
+
+  .hero-name {
+    font-size: clamp(44px, 6vw, 76px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.35s forwards;
+  }
+
+  .hero-name .accent { color: var(--cyan); }
+
+  .hero-role {
+    font-family: var(--mono);
+    font-size: clamp(14px, 2vw, 17px);
+    color: var(--purple);
+    margin-bottom: 1.75rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.5s forwards;
+  }
+
+  .hero-desc {
+    font-size: 16px;
+    color: var(--text2);
+    line-height: 1.75;
+    max-width: 500px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.65s forwards;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.8s forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .btn-primary {
+    background: var(--cyan);
+    color: #080c14;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--cyan);
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    padding: 11px 28px;
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(0,255,200,0.07);
+    border-color: var(--cyan);
+    transform: translateY(-2px);
+  }
+
+  /* ── TERMINAL ── */
+  .hero-right {
+    flex: 1;
+    max-width: 520px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.9s forwards;
+  }
+
+  .terminal {
+    background: #050810;
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: var(--mono);
+    font-size: 13px;
+    box-shadow: 0 0 60px rgba(0,255,200,0.04);
+  }
+
+  .terminal-bar {
+    background: #0d1221;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tdot { width: 11px; height: 11px; border-radius: 50%; }
+  .tdot-r { background: #ff5f57; }
+  .tdot-y { background: #ffbd2e; }
+  .tdot-g { background: #28ca41; }
+
+  .terminal-title {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.05em;
+  }
+
+  .terminal-body { padding: 20px; line-height: 2.1; }
+
+  .t-prompt { color: var(--cyan); }
+  .t-cmd { color: var(--text); }
+  .t-out { color: var(--text2); }
+  .t-green { color: var(--green); }
+  .t-purple { color: var(--purple); }
+  .t-amber { color: var(--amber); }
+  .t-comment { color: var(--text3); }
+  .t-cursor {
+    display: inline-block;
+    width: 8px; height: 14px;
+    background: var(--cyan);
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ── SECTION HEADERS ── */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--cyan);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--border2);
+  }
+
+  .section-title {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 0.6rem;
+    line-height: 1.15;
+  }
+
+  .section-sub {
+    font-size: 15px;
+    color: var(--text2);
+    margin-bottom: 3rem;
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* ── STATS ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 4rem;
+  }
+
+  .stat-box {
+    background: var(--card);
+    padding: 1.5rem;
+    text-align: center;
+    transition: background 0.2s;
+  }
+
+  .stat-box:hover { background: #121d35; }
+
+  .stat-num {
+    font-family: var(--mono);
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--cyan);
+    display: block;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text3);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-bottom: 4rem;
+  }
+
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: border-color 0.25s, transform 0.25s, background 0.25s;
+    cursor: default;
+  }
+
+  .skill-card:hover {
+    border-color: var(--border2);
+    transform: translateY(-3px);
+    background: #121d35;
+  }
+
+  .skill-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+
+  .skill-icon {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-family: var(--mono);
+    font-weight: 700;
+  }
+
+  .skill-icon.cyan   { background: rgba(0,255,200,0.12); color: var(--cyan); }
+  .skill-icon.purple { background: rgba(168,85,247,0.12); color: var(--purple); }
+  .skill-icon.amber  { background: rgba(245,158,11,0.12); color: var(--amber); }
+  .skill-icon.green  { background: rgba(34,197,94,0.12); color: var(--green); }
+
+  .skill-card-title { font-size: 14px; font-weight: 600; color: var(--text); }
+
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    background: rgba(255,255,255,0.02);
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .tag:hover { border-color: var(--border2); color: var(--text); }
+
+  /* ── PIPELINE DIAGRAM ── */
+  .pipeline-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 4rem;
+    overflow-x: auto;
+  }
+
+  .pipeline-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .pipeline { display: flex; align-items: center; min-width: 620px; }
+
+  .pipe-node {
+    flex: 1;
+    background: #080c14;
+    border: 1px solid var(--border2);
+    border-radius: 7px;
+    padding: 12px 14px;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .pipe-node:hover { border-color: var(--cyan); transform: translateY(-2px); }
+
+  .pipe-node-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  .pipe-node-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .pipe-node-name.c { color: var(--cyan); }
+  .pipe-node-name.p { color: var(--purple); }
+  .pipe-node-name.a { color: var(--amber); }
+  .pipe-node-name.g { color: var(--green); }
+
+  .pipe-arrow {
+    width: 36px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .pipe-arrow::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 50%;
+    height: 1px;
+    background: var(--border2);
+  }
+
+  .pipe-arrow::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 0; height: 0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 6px solid var(--cyan2);
+  }
+
+  .pipe-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--cyan);
+    position: absolute;
+    left: 0;
+    animation: flow 1.8s linear infinite;
+  }
+
+  @keyframes flow {
+    0%   { left: 0; opacity: 0; }
+    15%  { opacity: 1; }
+    85%  { opacity: 1; }
+    100% { left: 30px; opacity: 0; }
+  }
+
+  /* ── PROJECTS ── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project-card:hover {
+    border-color: var(--border2);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+
+  .project-card.featured {
+    border-color: rgba(0,255,200,0.18);
+    grid-column: span 2;
+  }
+
+  .project-card.featured:hover {
+    border-color: rgba(0,255,200,0.35);
+  }
+
+  .featured-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--cyan);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    background: rgba(0,255,200,0.07);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .featured-label::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--cyan);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .project-header {
+    background: linear-gradient(135deg, rgba(0,255,200,0.05), rgba(168,85,247,0.05));
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .project-header.purple-grad {
+    background: linear-gradient(135deg, rgba(168,85,247,0.07), rgba(0,255,200,0.03));
+  }
+  .project-header.amber-grad {
+    background: linear-gradient(135deg, rgba(245,158,11,0.07), rgba(168,85,247,0.03));
+  }
+  .project-header.green-grad {
+    background: linear-gradient(135deg, rgba(34,197,94,0.06), rgba(0,255,200,0.03));
+  }
+
+  .project-title { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .project-date  { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+
+  .project-badges { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .badge.cyan   { background: rgba(0,255,200,0.10); color: var(--cyan);   border: 1px solid rgba(0,255,200,0.2); }
+  .badge.purple { background: rgba(168,85,247,0.10); color: var(--purple); border: 1px solid rgba(168,85,247,0.2); }
+  .badge.amber  { background: rgba(245,158,11,0.10); color: var(--amber);  border: 1px solid rgba(245,158,11,0.2); }
+  .badge.green  { background: rgba(34,197,94,0.08);  color: var(--green);  border: 1px solid rgba(34,197,94,0.2); }
+
+  .project-body { padding: 1.25rem 1.5rem; flex: 1; display: flex; flex-direction: column; }
+
+  .project-desc {
+    font-size: 13.5px;
+    color: var(--text2);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    flex: 1;
+  }
+
+  .project-bullets {
+    list-style: none;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .project-bullets li {
+    font-size: 13px;
+    color: var(--text2);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.55;
+  }
+
+  .project-bullets li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--cyan);
+    font-size: 10px;
+    top: 3px;
+  }
+
+  .project-metrics {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .metric { text-align: center; }
+
+  .metric-val {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--cyan);
+    display: block;
+  }
+
+  .metric-val.p { color: var(--purple); }
+  .metric-val.a { color: var(--amber); }
+  .metric-val.g { color: var(--green); }
+
+  .metric-name { font-size: 11px; color: var(--text3); margin-top: 2px; display: block; }
+
+  .project-stack { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 1rem; }
+
+  /* ── EXPERIENCE ── */
+  .exp-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .exp-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+
+  .exp-item:hover { border-color: var(--border2); transform: translateX(4px); }
+
+  .exp-dot-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 4px;
+  }
+
+  .exp-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--cyan);
+    background: var(--bg);
+    flex-shrink: 0;
+  }
+
+  .exp-line {
+    width: 1px;
+    flex: 1;
+    background: var(--border);
+    min-height: 20px;
+    margin-top: 4px;
+  }
+
+  .exp-content { flex: 1; }
+
+  .exp-role    { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+  .exp-company { font-family: var(--mono); font-size: 12px; color: var(--cyan); margin-bottom: 6px; }
+  .exp-date    { font-family: var(--mono); font-size: 11px; color: var(--text3); margin-bottom: 10px; }
+
+  .exp-points  { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+
+  .exp-points li {
+    font-size: 13px;
+    color: var(--text2);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .exp-points li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--cyan);
+    font-size: 11px;
+    top: 2px;
+  }
+
+  /* ── CONTACT ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .contact-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 2rem;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s;
+  }
+
+  .contact-item:last-child { border-bottom: none; }
+  .contact-item:hover { transform: translateX(4px); }
+  .contact-item:hover .contact-val { color: var(--cyan); }
+
+  .contact-icon {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    background: rgba(0,255,200,0.08);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--cyan);
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+
+  .contact-label { font-family: var(--mono); font-size: 11px; color: var(--text3); display: block; margin-bottom: 2px; }
+  .contact-val   { font-size: 14px; color: var(--text); transition: color 0.2s; }
+
+  .availability-card {
+    background: rgba(0,255,200,0.03);
+    border: 1px solid rgba(0,255,200,0.14);
+    border-radius: 10px;
+    padding: 2rem;
+  }
+
+  .avail-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; }
+
+  .avail-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 10px var(--green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--green); } 50% { opacity: 0.5; box-shadow: 0 0 4px var(--green); } }
+
+  .avail-title { font-family: var(--mono); font-size: 13px; color: var(--green); font-weight: 600; }
+
+  .avail-text { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 1.5rem; }
+
+  .avail-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text2);
+    padding: 5px 0;
+  }
+
+  .avail-bullet { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2.5rem 2rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text3);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(0,255,200,0.35); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    #hero { flex-direction: column; padding-top: 100px; gap: 2.5rem; }
+    .hero-right { max-width: 100%; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .project-card.featured { grid-column: span 1; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .nav-links { gap: 1.25rem; }
+    section { padding: 100px 5vw 60px; }
+  }
+
+  @media (max-width: 500px) {
+    .nav-links { display: none; }
+    .projects-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="main-nav">
+  <a href="#hero" class="nav-logo">ua<span>@pipeline</span><span style="color:var(--cyan)">:~</span><span class="cursor-nav"></span></a>
+  <ul class="nav-links">
+    <li><a href="#about">about</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#experience">experience</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero" style="max-width:100%;padding-top:60px;min-height:100vh;padding-left:6vw;padding-right:6vw;">
+  <div class="hero-left">
+    <div class="hero-tag">Data Engineer</div>
+    <h1 class="hero-name">Umar<br><span class="accent">Ahmad</span></h1>
+    <div class="hero-role">// building pipelines that actually ship</div>
+    <p class="hero-desc">
+      I design and build end-to-end data systems — from real-time Kafka streams and
+      distributed Spark jobs to clean analytical warehouses with automated quality guarantees.
+      Seven production projects. Every one runs on real data.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="https://github.com/Miguel3o2" class="btn-secondary" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="tdot tdot-r"></div>
+        <div class="tdot tdot-y"></div>
+        <div class="tdot tdot-g"></div>
+        <span class="terminal-title">ecommerce_platform.py</span>
+      </div>
+      <div class="terminal-body" id="terminal-body">
+        <div><span class="t-comment"># real_time_ecommerce_platform</span></div>
+        <div><span class="t-prompt">$</span> <span class="t-cmd">airflow dags trigger daily_batch_pipeline</span></div>
+        <div id="t-lines"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="section-label reveal">01 — About</div>
+  <h2 class="section-title reveal reveal-delay-1">Building at the intersection<br>of data and engineering</h2>
+  <p class="section-sub reveal reveal-delay-2">Computer Science graduate from University of Agriculture, Peshawar. Based in Islamabad, Pakistan — building distributed systems from scratch.</p>
+
+  <div class="stats-row reveal reveal-delay-3">
+    <div class="stat-box">
+      <span class="stat-num" data-count="7">0</span>
+      <span class="stat-label">Production Projects</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" data-count="31">0</span>
+      <span class="stat-label">dbt Tests Passing</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" data-suffix="+" data-count="15">0</span>
+      <span class="stat-label">Tools & Technologies</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" data-count="65">0</span>
+      <span class="stat-label">Events/sec (Kafka)</span>
+    </div>
+  </div>
+
+  <div class="skills-grid reveal">
+    <div class="skill-card">
+      <div class="skill-card-header">
+        <div class="skill-icon cyan">DE</div>
+        <span class="skill-card-title">Data Engineering</span>
+      </div>
+      <div class="skill-tags">
+        <span class="tag">Apache Kafka</span><span class="tag">Apache Spark</span>
+        <span class="tag">Apache Airflow</span><span class="tag">dbt</span>
+        <span class="tag">Hadoop HDFS</span><span class="tag">Delta Lake</span>
+        <span class="tag">Medallion Architecture</span><span class="tag">SCD Type 2</span>
+        <span class="tag">Incremental Loading</span><span class="tag">Star Schema</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-header">
+        <div class="skill-icon purple">CL</div>
+        <span class="skill-card-title">Cloud & Storage</span>
+      </div>
+      <div class="skill-tags">
+        <span class="tag">AWS S3</span><span class="tag">Boto3</span>
+        <span class="tag">PostgreSQL</span><span class="tag">Redshift</span>
+        <span class="tag">Parquet</span><span class="tag">Docker</span>
+        <span class="tag">Docker Compose</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-header">
+        <div class="skill-icon amber">PY</div>
+        <span class="skill-card-title">Languages & Tools</span>
+      </div>
+      <div class="skill-tags">
+        <span class="tag">Python</span><span class="tag">SQL</span>
+        <span class="tag">PySpark</span><span class="tag">pandas</span>
+        <span class="tag">SQLAlchemy</span><span class="tag">TypeScript</span>
+        <span class="tag">JavaScript</span><span class="tag">Git</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-header">
+        <div class="skill-icon green">FE</div>
+        <span class="skill-card-title">Frontend & Backend</span>
+      </div>
+      <div class="skill-tags">
+        <span class="tag">React.js</span><span class="tag">Next.js</span>
+        <span class="tag">TailwindCSS</span><span class="tag">Angular</span>
+        <span class="tag">Ruby on Rails</span><span class="tag">Strapi</span>
+        <span class="tag">Zoho CRM</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pipeline-wrap reveal">
+    <div class="pipeline-title">// typical pipeline architecture</div>
+    <div class="pipeline">
+      <div class="pipe-node">
+        <div class="pipe-node-label">source</div>
+        <div class="pipe-node-name c">Kafka / API</div>
+      </div>
+      <div class="pipe-arrow"><div class="pipe-dot"></div></div>
+      <div class="pipe-node">
+        <div class="pipe-node-label">bronze</div>
+        <div class="pipe-node-name a">HDFS / S3</div>
+      </div>
+      <div class="pipe-arrow"><div class="pipe-dot" style="animation-delay:0.4s"></div></div>
+      <div class="pipe-node">
+        <div class="pipe-node-label">silver</div>
+        <div class="pipe-node-name p">Spark Batch</div>
+      </div>
+      <div class="pipe-arrow"><div class="pipe-dot" style="animation-delay:0.8s"></div></div>
+      <div class="pipe-node">
+        <div class="pipe-node-label">gold</div>
+        <div class="pipe-node-name g">dbt Models</div>
+      </div>
+      <div class="pipe-arrow"><div class="pipe-dot" style="animation-delay:1.2s"></div></div>
+      <div class="pipe-node">
+        <div class="pipe-node-label">orchestrate</div>
+        <div class="pipe-node-name c">Airflow DAG</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ── -->
+<section id="projects">
+  <div class="section-label reveal">02 — Projects</div>
+  <h2 class="section-title reveal reveal-delay-1">Production-grade systems,<br>real data, real scale</h2>
+  <p class="section-sub reveal reveal-delay-2">Every project is built on live APIs or real datasets, runs on actual infrastructure, and ships with automated data quality testing.</p>
+
+  <div class="projects-grid">
+
+    <!-- ── FEATURED: E-COMMERCE PLATFORM ── -->
+    <div class="project-card featured reveal">
+      <div class="featured-label">flagship project — most complex</div>
+      <div class="project-header">
+        <div>
+          <div class="project-title">Real-Time E-Commerce Analytics Platform</div>
+          <div class="project-date">Apr 2026</div>
+        </div>
+        <div class="project-badges">
+          <span class="badge cyan">Kafka</span>
+          <span class="badge cyan">Spark</span>
+          <span class="badge cyan">Hadoop</span>
+          <span class="badge purple">Airflow</span>
+          <span class="badge purple">dbt</span>
+          <span class="badge amber">Docker</span>
+          <span class="badge green">PostgreSQL</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          A fully distributed, production-grade data platform that processes live e-commerce events in real time.
+          Three Python producers simulate an actual online store — orders, user clicks, and inventory movements —
+          pushing events into a 3-broker Kafka cluster at 65+ messages per second. Spark Structured Streaming
+          consumes all three topics simultaneously, validates schemas, deduplicates using watermarking, and writes
+          Snappy-compressed Parquet to Hadoop HDFS every 5 minutes. Daily Spark batch jobs promote data through
+          a full Medallion Architecture: Bronze (raw) → Silver (cleaned, type-cast, business-rule validated) →
+          Gold (star schema with SCD Type 2 on customer and product dimensions). Three Airflow DAGs orchestrate
+          everything on schedule. dbt builds the analytical marts and enforces 31 data quality tests automatically.
+        </p>
+        <ul class="project-bullets">
+          <li>Kafka 3-broker cluster with replication factor 3 and min.insync.replicas 2 — no data loss if a broker goes down</li>
+          <li>Watermark-based deduplication in Spark Streaming handles late-arriving events up to 10 minutes without unbounded state</li>
+          <li>SCD Type 2 on dim_customers and dim_products — every past order joins to the dimension record that was current at the time of sale</li>
+          <li>31/31 dbt tests passing: uniqueness, referential integrity, accepted values, no negative revenue, no duplicate current SCD records</li>
+        </ul>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val">65+</span><span class="metric-name">events/sec</span></div>
+          <div class="metric"><span class="metric-val p">3</span><span class="metric-name">Kafka brokers</span></div>
+          <div class="metric"><span class="metric-val a">31</span><span class="metric-name">dbt tests</span></div>
+          <div class="metric"><span class="metric-val g">3</span><span class="metric-name">Airflow DAGs</span></div>
+          <div class="metric"><span class="metric-val">13</span><span class="metric-name">containers</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Python</span><span class="tag">Apache Kafka</span>
+          <span class="tag">Apache Spark</span><span class="tag">Hadoop HDFS</span>
+          <span class="tag">Apache Airflow</span><span class="tag">dbt</span>
+          <span class="tag">PostgreSQL</span><span class="tag">Parquet</span>
+          <span class="tag">Docker Compose</span><span class="tag">SCD Type 2</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FINANCIAL DATA PLATFORM ── -->
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-header">
+        <div>
+          <div class="project-title">Real-Time Financial Data Platform</div>
+          <div class="project-date">Apr 2026</div>
+        </div>
+        <div class="project-badges">
+          <span class="badge cyan">Airflow</span>
+          <span class="badge cyan">AWS S3</span>
+          <span class="badge purple">dbt</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          An orchestrated stock data platform that ingests live prices for 15 S&P 500 companies
+          every hour via the Yahoo Finance API. Raw JSON lands in AWS S3 Bronze, gets cleaned into
+          Parquet in S3 Silver, and analytical Gold tables are built with dbt — all driven by a
+          5-task Airflow DAG with automatic retries and XCom data passing.
+        </p>
+        <ul class="project-bullets">
+          <li>5-task Airflow DAG with retry logic, XCom between tasks, and dbt as the final quality gate</li>
+          <li>Cloud-native Medallion Architecture: raw JSON → cleaned Parquet → analytical Gold models</li>
+          <li>12 automated dbt tests covering uniqueness, nulls, and price range validation</li>
+        </ul>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val">15</span><span class="metric-name">stocks tracked</span></div>
+          <div class="metric"><span class="metric-val p">5</span><span class="metric-name">DAG tasks</span></div>
+          <div class="metric"><span class="metric-val a">12</span><span class="metric-name">quality tests</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Python</span><span class="tag">yfinance</span>
+          <span class="tag">Airflow</span><span class="tag">AWS S3</span>
+          <span class="tag">Parquet</span><span class="tag">dbt</span>
+          <span class="tag">PostgreSQL</span><span class="tag">Docker</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MUSIC LAKEHOUSE ── -->
+    <div class="project-card reveal reveal-delay-2">
+      <div class="project-header purple-grad">
+        <div>
+          <div class="project-title">Music Data Lakehouse</div>
+          <div class="project-date">Mar 2026</div>
+        </div>
+        <div class="project-badges">
+          <span class="badge purple">Delta Lake</span>
+          <span class="badge cyan">dbt</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          A Delta Lake-based lakehouse ingesting live chart data from the Last.fm API — 300+ tracks,
+          artists, and genre tags. Bronze tables use ACID transactions with append-only history,
+          Silver handles deduplication and type casting, and a dbt project with 6 models across
+          staging and mart layers runs 16 automated tests — all passing.
+        </p>
+        <ul class="project-bullets">
+          <li>Delta Lake ACID transactions guarantee Bronze table consistency even under concurrent writes</li>
+          <li>Silver layer handles deduplication, null-safe transforms, and type casting before promotion</li>
+          <li>6 dbt models (staging + marts) with 16 quality tests across uniqueness and not-null constraints</li>
+        </ul>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val p">300+</span><span class="metric-name">records</span></div>
+          <div class="metric"><span class="metric-val">6</span><span class="metric-name">dbt models</span></div>
+          <div class="metric"><span class="metric-val a">16</span><span class="metric-name">tests</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Python</span><span class="tag">Delta Lake</span>
+          <span class="tag">dbt</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STOCK DATA WAREHOUSE ── -->
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-header amber-grad">
+        <div>
+          <div class="project-title">Stock Data Warehouse</div>
+          <div class="project-date">Feb 2026</div>
+        </div>
+        <div class="project-badges">
+          <span class="badge amber">SCD Type 2</span>
+          <span class="badge cyan">Incremental</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          A production data warehouse for 15 S&P 500 stocks with full SCD Type 2 tracking on the
+          companies dimension — preserving the complete history of sector changes. Incremental loading
+          is implemented in both Python and dbt, so each run only fetches new data since the last
+          watermark, cutting unnecessary API calls on every subsequent run.
+        </p>
+        <ul class="project-bullets">
+          <li>SCD Type 2 on company dimension tracks sector reclassifications with effective_from/to dates</li>
+          <li>Incremental loader detects latest loaded date and fetches only new records — no full refreshes</li>
+          <li>15 dbt tests: uniqueness, not_null, accepted_values, and custom SQL asserting no negative prices</li>
+        </ul>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val a">15</span><span class="metric-name">stocks</span></div>
+          <div class="metric"><span class="metric-val p">SCD2</span><span class="metric-name">history tracked</span></div>
+          <div class="metric"><span class="metric-val">15</span><span class="metric-name">dbt tests</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Python</span><span class="tag">SQL</span>
+          <span class="tag">dbt</span><span class="tag">PostgreSQL</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FOOTBALL DW ── -->
+    <div class="project-card reveal reveal-delay-2">
+      <div class="project-header green-grad">
+        <div>
+          <div class="project-title">Football Data Warehouse</div>
+          <div class="project-date">Nov – Dec 2025</div>
+        </div>
+        <div class="project-badges">
+          <span class="badge green">Star Schema</span>
+          <span class="badge purple">dbt</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          A star schema data warehouse ingesting all 380 Premier League matches from the
+          Football-Data.org API. Fact and dimension tables are modelled in dbt, producing
+          a full league standings table with points, wins, draws, losses, goal difference,
+          and form across the season.
+        </p>
+        <ul class="project-bullets">
+          <li>Star schema: fact_matches + dim_clubs + dim_season + dim_time</li>
+          <li>dbt models compute league standings, home/away splits, and goal stats automatically</li>
+          <li>Full season re-processable from raw data in under 30 seconds</li>
+        </ul>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val g">380</span><span class="metric-name">matches</span></div>
+          <div class="metric"><span class="metric-val">20</span><span class="metric-name">clubs</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Python</span><span class="tag">SQL</span>
+          <span class="tag">dbt</span><span class="tag">PostgreSQL</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── NHS ── -->
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-header purple-grad">
+        <div>
+          <div class="project-title">Hospital A&amp;E Wait Times Tracker</div>
+          <div class="project-date">Jan 2026</div>
+        </div>
+        <div class="project-badges">
+          <span class="badge cyan">Healthcare</span>
+          <span class="badge purple">dbt</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          An NHS England A&amp;E attendance pipeline covering 198 hospitals. Ingests official
+          public health data and runs dbt models that calculate the percentage of patients
+          waiting over 4 hours, flag hospitals in critical breach, and produce a clean
+          regional performance summary.
+        </p>
+        <ul class="project-bullets">
+          <li>Ingests NHS England public attendance datasets and loads into PostgreSQL with validation</li>
+          <li>dbt models flag hospitals breaching the 4-hour target and aggregate by NHS region</li>
+          <li>Critical breach alerts surfaced as a separate mart for operational reporting</li>
+        </ul>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val">198</span><span class="metric-name">hospitals</span></div>
+          <div class="metric"><span class="metric-val p">4hr</span><span class="metric-name">target tracked</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Python</span><span class="tag">SQL</span>
+          <span class="tag">dbt</span><span class="tag">PostgreSQL</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CRYPTO ── -->
+    <div class="project-card reveal reveal-delay-2">
+      <div class="project-header amber-grad">
+        <div>
+          <div class="project-title">Crypto ETL Pipeline</div>
+          <div class="project-date">Sep – Oct 2025</div>
+        </div>
+        <div class="project-badges">
+          <span class="badge amber">AWS S3</span>
+          <span class="badge cyan">ETL</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          My first production pipeline — an automated ETL system extracting live cryptocurrency
+          prices from the CoinGecko API, storing raw JSON in AWS S3, and loading transformed
+          records into PostgreSQL. Multi-layer dbt models surface price trend analytics and
+          24-hour change metrics.
+        </p>
+        <ul class="project-bullets">
+          <li>Full ETL: CoinGecko API → raw JSON in S3 → cleaned records in PostgreSQL → dbt analytics</li>
+          <li>dbt models calculate 24h price change, 7d trend, and rolling volatility</li>
+          <li>Established the pattern used across all subsequent projects in this portfolio</li>
+        </ul>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val a">AWS</span><span class="metric-name">S3 storage</span></div>
+          <div class="metric"><span class="metric-val">Live</span><span class="metric-name">API data</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Python</span><span class="tag">AWS S3</span>
+          <span class="tag">dbt</span><span class="tag">PostgreSQL</span><span class="tag">pandas</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ── -->
+<section id="experience">
+  <div class="section-label reveal">03 — Experience</div>
+  <h2 class="section-title reveal reveal-delay-1">Where I've worked</h2>
+  <p class="section-sub reveal reveal-delay-2">From AI data annotation and team leadership to full-stack agency work — I've always been the one who cared about how data flows.</p>
+
+  <div class="exp-list">
+
+    <div class="exp-item reveal">
+      <div class="exp-dot-col">
+        <div class="exp-dot"></div>
+        <div class="exp-line"></div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Data Collector &amp; Team Lead</div>
+        <div class="exp-company">Annotto — Remote</div>
+        <div class="exp-date">Oct 2025 – Present</div>
+        <ul class="exp-points">
+          <li>Led a team of 20+ annotators labelling thousands of images and video frames for AI/ML training datasets, owning quality standards and delivery timelines.</li>
+          <li>Contributed to development of screen recording software that captures in-game actions as structured data for model training pipelines.</li>
+          <li>Trained multiple AI models across several game titles, coordinating task assignment and managing throughput across the team.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal reveal-delay-1">
+      <div class="exp-dot-col">
+        <div class="exp-dot"></div>
+        <div class="exp-line"></div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Junior Web Developer</div>
+        <div class="exp-company">TKnack Digital Agency — Islamabad</div>
+        <div class="exp-date">May 2025 – Oct 2025</div>
+        <ul class="exp-points">
+          <li>Designed and managed PostgreSQL databases across multiple client projects — writing queries, building schemas, and handling data migrations.</li>
+          <li>Integrated content management workflows using Strapi and Zoho CRM, enabling non-technical stakeholders to manage data independently.</li>
+          <li>Built API integrations connecting frontend interfaces to backend data sources, working across the full stack on production client sites.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal reveal-delay-2">
+      <div class="exp-dot-col">
+        <div class="exp-dot"></div>
+        <div class="exp-line"></div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Junior Front-end Engineer</div>
+        <div class="exp-company">99digital Agency — Remote</div>
+        <div class="exp-date">Feb 2025 – May 2025</div>
+        <ul class="exp-points">
+          <li>Built the complete frontend for a large-scale website from scratch — handling component architecture, state management, responsive layouts, and REST API integration end-to-end.</li>
+          <li>Delivered in a remote production environment, which sharpened habits around code clarity, Git discipline, and async communication.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal reveal-delay-3">
+      <div class="exp-dot-col">
+        <div class="exp-dot"></div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Junior Front-end Intern</div>
+        <div class="exp-company">TKnack Digital Agency — Islamabad</div>
+        <div class="exp-date">Aug 2024 – Feb 2025</div>
+        <ul class="exp-points">
+          <li>Implemented UI components and resolved styling issues across multiple live client projects using Tailwind CSS.</li>
+          <li>Worked closely with senior developers, building solid foundations in Git workflows, code review, and collaborative development practices.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="section-label reveal">04 — Contact</div>
+  <h2 class="section-title reveal reveal-delay-1">Let's build something</h2>
+  <p class="section-sub reveal reveal-delay-2">Open to data engineering roles, freelance pipeline projects, and interesting collaborations. I reply to every message.</p>
+
+  <div class="contact-grid reveal reveal-delay-3">
+    <div class="contact-card">
+      <a href="mailto:umarahmad32191@gmail.com" class="contact-item">
+        <div class="contact-icon">@</div>
+        <div>
+          <span class="contact-label">email</span>
+          <span class="contact-val">umarahmad32191@gmail.com</span>
+        </div>
+      </a>
+      <a href="https://github.com/Miguel3o2" target="_blank" rel="noopener" class="contact-item">
+        <div class="contact-icon">GH</div>
+        <div>
+          <span class="contact-label">github</span>
+          <span class="contact-val">github.com/Miguel3o2</span>
+        </div>
+      </a>
+      <a href="https://www.linkedin.com/in/umar-ahmad-263b77209" target="_blank" rel="noopener" class="contact-item">
+        <div class="contact-icon">LI</div>
+        <div>
+          <span class="contact-label">linkedin</span>
+          <span class="contact-val">umar-ahmad-263b77209</span>
+        </div>
+      </a>
+      <div class="contact-item" style="cursor:default;">
+        <div class="contact-icon">PK</div>
+        <div>
+          <span class="contact-label">location</span>
+          <span class="contact-val">Islamabad, Pakistan</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="availability-card">
+      <div class="avail-header">
+        <div class="avail-dot"></div>
+        <span class="avail-title">Available for opportunities</span>
+      </div>
+      <p class="avail-text">
+        I'm actively looking for data engineering roles where I can design and build real
+        pipelines on real infrastructure. I care most about companies working with
+        large-scale data, real-time systems, or cloud-native architectures — places where
+        the data work actually matters to the product.
+      </p>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div class="avail-item">
+          <div class="avail-bullet" style="background:var(--cyan);"></div>
+          Full-time data engineering roles
+        </div>
+        <div class="avail-item">
+          <div class="avail-bullet" style="background:var(--purple);"></div>
+          Freelance pipeline &amp; warehouse projects
+        </div>
+        <div class="avail-item">
+          <div class="avail-bullet" style="background:var(--amber);"></div>
+          Remote or Islamabad-based
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span style="color:var(--cyan);font-weight:700;">ua</span>&nbsp;&nbsp;raw data is just potential — I turn it into answers&nbsp;&nbsp;·&nbsp;&nbsp;Umar Ahmad © 2026
+</footer>
+
+<script>
+  /* ── TERMINAL ANIMATION ── */
+  const lines = [
+    { delay: 600,  html: '<div><span class="t-out">run_id: manual__2026-04-06T06:52:41</span></div>' },
+    { delay: 1300, html: '<div><span class="t-green">✓ get_processing_date</span><span class="t-out"> — 2026-04-06 [0.1s]</span></div>' },
+    { delay: 2100, html: '<div><span class="t-green">✓ run_bronze_to_silver</span><span class="t-out"> — 4,200 orders cleaned [18s]</span></div>' },
+    { delay: 3000, html: '<div><span class="t-green">✓ run_silver_to_gold</span><span class="t-out"> — SCD Type 2 applied [22s]</span></div>' },
+    { delay: 3800, html: '<div><span class="t-green">✓ dbt_run_models</span><span class="t-out"> — 2 models built [0.4s]</span></div>' },
+    { delay: 4600, html: '<div><span class="t-green">✓ dbt_run_tests</span><span class="t-out"> — PASS=31 WARN=0 ERROR=0</span></div>' },
+    { delay: 5300, html: '<div><span class="t-purple">Pipeline complete.</span> <span class="t-amber">Duration: 41.2s</span></div>' },
+    { delay: 5900, html: '<div><span class="t-prompt">$</span> <span class="t-cursor"></span></div>' },
+  ];
+
+  const container = document.getElementById('t-lines');
+  lines.forEach(({ delay, html }) => {
+    setTimeout(() => {
+      const prev = container.querySelector('.t-cursor');
+      if (prev) prev.closest('div').remove();
+      container.insertAdjacentHTML('beforeend', html);
+    }, delay);
+  });
+
+  /* ── COUNTER ANIMATION ── */
+  const counters = document.querySelectorAll('[data-count]');
+  const counterObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseInt(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      let current = 0;
+      const step = Math.max(1, Math.ceil(target / 35));
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = current + suffix;
+        if (current >= target) clearInterval(timer);
+      }, 35);
+      counterObs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+
+  counters.forEach(el => counterObs.observe(el));
+
+  /* ── SCROLL REVEAL ── */
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  /* ── NAV SCROLL EFFECT ── */
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  /* ── SMOOTH SCROLL ── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
