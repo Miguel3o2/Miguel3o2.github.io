@@ -910,13 +910,13 @@
 <!-- ── HERO ── -->
 <section id="hero" style="max-width:100%;padding-top:60px;min-height:100vh;padding-left:6vw;padding-right:6vw;">
   <div class="hero-left">
-    <div class="hero-tag">Data Engineer</div>
+    <div class="hero-tag">Data Engineer &amp; ML Engineer</div>
     <h1 class="hero-name">Umar<br><span class="accent">Ahmad</span></h1>
-    <div class="hero-role">// building pipelines that actually ship</div>
+    <div class="hero-role">// pipelines, models, and systems that actually ship</div>
     <p class="hero-desc">
-      I design and build end-to-end data systems — from real-time Kafka streams and
-      distributed Spark jobs to clean analytical warehouses with automated quality guarantees.
-      Seven production projects. Every one runs on real data.
+      I design and build end-to-end data and ML systems — from real-time Kafka streams
+      and distributed Spark jobs to U-Net medical image segmentation models trained from scratch.
+      Nine production projects. Every one runs on real data.
     </p>
     <div class="hero-btns">
       <a href="#projects" class="btn-primary">View Projects</a>
@@ -944,12 +944,12 @@
 <!-- ── ABOUT ── -->
 <section id="about">
   <div class="section-label reveal">01 — About</div>
-  <h2 class="section-title reveal reveal-delay-1">Building at the intersection<br>of data and engineering</h2>
-  <p class="section-sub reveal reveal-delay-2">Computer Science graduate from University of Agriculture, Peshawar. Based in Islamabad, Pakistan — building distributed systems from scratch.</p>
+  <h2 class="section-title reveal reveal-delay-1">Building at the intersection<br>of data, ML, and engineering</h2>
+  <p class="section-sub reveal reveal-delay-2">Computer Science graduate from University of Agriculture, Peshawar. Based in Islamabad, Pakistan — building medical AI models and distributed data systems from scratch.</p>
 
   <div class="stats-row reveal reveal-delay-3">
     <div class="stat-box">
-      <span class="stat-num" data-count="7">0</span>
+      <span class="stat-num" data-count="9">0</span>
       <span class="stat-label">Production Projects</span>
     </div>
     <div class="stat-box">
@@ -957,12 +957,12 @@
       <span class="stat-label">dbt Tests Passing</span>
     </div>
     <div class="stat-box">
-      <span class="stat-num" data-suffix="+" data-count="15">0</span>
-      <span class="stat-label">Tools & Technologies</span>
+      <span class="stat-num" data-suffix="M+" data-count="31">0</span>
+      <span class="stat-label">U-Net Parameters</span>
     </div>
     <div class="stat-box">
-      <span class="stat-num" data-count="65">0</span>
-      <span class="stat-label">Events/sec (Kafka)</span>
+      <span class="stat-num" data-count="25">0</span>
+      <span class="stat-label">IoT Msgs/sec (Kafka)</span>
     </div>
   </div>
 
@@ -978,6 +978,20 @@
         <span class="tag">Hadoop HDFS</span><span class="tag">Delta Lake</span>
         <span class="tag">Medallion Architecture</span><span class="tag">SCD Type 2</span>
         <span class="tag">Incremental Loading</span><span class="tag">Star Schema</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-header">
+        <div class="skill-icon green">ML</div>
+        <span class="skill-card-title">ML &amp; Medical Imaging</span>
+      </div>
+      <div class="skill-tags">
+        <span class="tag">PyTorch</span><span class="tag">U-Net</span>
+        <span class="tag">CNN</span><span class="tag">NIfTI</span>
+        <span class="tag">DICOM</span><span class="tag">nibabel</span>
+        <span class="tag">pydicom</span><span class="tag">Dice Loss</span>
+        <span class="tag">scikit-learn</span><span class="tag">NumPy</span>
+        <span class="tag">SciPy</span><span class="tag">Matplotlib</span>
       </div>
     </div>
     <div class="skill-card">
@@ -1052,10 +1066,106 @@
 <!-- ── PROJECTS ── -->
 <section id="projects">
   <div class="section-label reveal">02 — Projects</div>
-  <h2 class="section-title reveal reveal-delay-1">Production-grade systems,<br>real data, real scale</h2>
-  <p class="section-sub reveal reveal-delay-2">Every project is built on live APIs or real datasets, runs on actual infrastructure, and ships with automated data quality testing.</p>
+  <h2 class="section-title reveal reveal-delay-1">ML models, pipelines, and systems —<br>built from scratch, on real data</h2>
+  <p class="section-sub reveal reveal-delay-2">Two medical AI and IoT projects at the top. Everything below is production-grade data engineering — real APIs, real infrastructure, automated quality testing throughout.</p>
 
   <div class="projects-grid">
+
+    <!-- ── FEATURED: U-NET MEDICAL SEGMENTATION ── -->
+    <div class="project-card featured reveal">
+      <div class="featured-label">medical AI — flagship ML project</div>
+      <div class="project-header" style="background:linear-gradient(135deg,rgba(0,255,200,0.07),rgba(168,85,247,0.07));">
+        <div>
+          <div class="project-title">Medical Image Segmentation — U-Net (PyTorch)</div>
+          <div class="project-date">Apr 2026</div>
+        </div>
+        <div class="project-badges">
+          <span class="badge cyan">PyTorch</span>
+          <span class="badge cyan">U-Net</span>
+          <span class="badge purple">NIfTI</span>
+          <span class="badge purple">Medical AI</span>
+          <span class="badge green">Dice &gt;0.82</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          Implemented the U-Net architecture from scratch in PyTorch for hippocampus segmentation on brain MRI scans —
+          the same clinical task that powers organ-at-risk delineation in radiation oncology software.
+          The hippocampus occupies less than 2% of the MRI volume, making standard loss functions useless;
+          a combined DiceBCE loss handles the extreme class imbalance directly.
+          Built the full pipeline: NIfTI ingestion, z-score normalisation, 2D slice extraction,
+          data augmentation, training with cosine annealing and gradient clipping, and evaluation
+          with Dice, IoU, precision, and recall. Validated on the Medical Segmentation Decathlon Task04 benchmark.
+        </p>
+        <ul class="project-bullets">
+          <li>~31 million parameter U-Net: 4-level encoder (64→128→256→512 channels), symmetric decoder, skip connections via concatenation — not addition — to preserve fine boundary detail</li>
+          <li>Combined DiceBCE loss: Dice handles &lt;2% foreground class imbalance, BCE stabilises early-training gradients — standard in clinical segmentation pipelines</li>
+          <li>Complete ETL pipeline: load NIfTI volumes with nibabel, z-score normalise, resize slices to 256×256, filter near-empty slices, augment, save as .npy for fast DataLoader access</li>
+          <li>Cosine annealing LR schedule, gradient clipping at norm=1.0, best-checkpoint tracking by validation Dice — production training practices throughout</li>
+        </ul>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val g">0.82+</span><span class="metric-name">Dice score</span></div>
+          <div class="metric"><span class="metric-val p">31M</span><span class="metric-name">parameters</span></div>
+          <div class="metric"><span class="metric-val">263</span><span class="metric-name">MRI volumes</span></div>
+          <div class="metric"><span class="metric-val a">7</span><span class="metric-name">source files</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Python</span><span class="tag">PyTorch</span>
+          <span class="tag">U-Net</span><span class="tag">nibabel</span>
+          <span class="tag">NIfTI</span><span class="tag">NumPy</span>
+          <span class="tag">SciPy</span><span class="tag">Matplotlib</span>
+          <span class="tag">scikit-learn</span><span class="tag">Medical Segmentation Decathlon</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FEATURED: IOT STREAMING PLATFORM ── -->
+    <div class="project-card featured reveal reveal-delay-1">
+      <div class="featured-label">cloud + IoT — end-to-end streaming system</div>
+      <div class="project-header" style="background:linear-gradient(135deg,rgba(245,158,11,0.07),rgba(0,255,200,0.05));">
+        <div>
+          <div class="project-title">Industrial IoT Streaming &amp; Analytics Platform</div>
+          <div class="project-date">Mar – Apr 2026</div>
+        </div>
+        <div class="project-badges">
+          <span class="badge amber">Kafka</span>
+          <span class="badge amber">AWS IoT Core</span>
+          <span class="badge cyan">Spark Streaming</span>
+          <span class="badge cyan">Delta Lake</span>
+          <span class="badge purple">Airflow</span>
+          <span class="badge green">Grafana</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          A production-grade IoT data platform simulating a real industrial sensor network — 50 sensors
+          publishing 25 messages per second to Kafka over mutual TLS, processed by Spark Structured Streaming,
+          stored in a full Medallion Architecture on AWS S3, analysed by Hadoop MapReduce,
+          and orchestrated by Airflow with live anomaly detection in Grafana.
+          Every layer of the modern data stack, connected end to end.
+        </p>
+        <ul class="project-bullets">
+          <li>50-sensor Python simulator: concurrent daemon threads, Gaussian noise, 2% anomaly injection, gzip-compressed Kafka producer with idempotent delivery and Dead Letter Queue — verified via AWS IoT Core MQTT test client over mutual TLS (X.509)</li>
+          <li>Spark Structured Streaming: Kafka source, 5-minute sliding window aggregations with 2-minute watermarks, Pandas UDF Z-score anomaly scoring (Arrow-backed, ~100× faster than row UDFs), Delta Lake sink with checkpoint fault recovery</li>
+          <li>Full Medallion on AWS S3: Bronze (append-only), Silver (MERGE upsert deduplication, range validation), Gold (hourly zone summaries, daily anomaly reports, risk classification); OPTIMIZE + ZORDER + VACUUM with 7-day time-travel retention</li>
+          <li>Airflow DAG with diamond dependency pattern (Bronze fans to Silver + Hadoop in parallel), XCom metric passing, SLA monitoring, on_failure_callback publishing to CloudWatch; Grafana dashboard with ML-based ANOMALY_DETECTION_BAND alarm</li>
+        </ul>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val a">25</span><span class="metric-name">msgs/sec</span></div>
+          <div class="metric"><span class="metric-val">50</span><span class="metric-name">IoT sensors</span></div>
+          <div class="metric"><span class="metric-val c" style="color:var(--cyan)">100×</span><span class="metric-name">UDF speedup</span></div>
+          <div class="metric"><span class="metric-val p">7-day</span><span class="metric-name">time travel</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Python</span><span class="tag">Apache Kafka</span>
+          <span class="tag">AWS IoT Core</span><span class="tag">MQTT / TLS</span>
+          <span class="tag">Spark Streaming</span><span class="tag">Delta Lake</span>
+          <span class="tag">AWS S3</span><span class="tag">Hadoop MapReduce</span>
+          <span class="tag">Apache Airflow</span><span class="tag">Grafana</span>
+          <span class="tag">Databricks</span><span class="tag">Pandas UDF</span>
+        </div>
+      </div>
+    </div>
 
     <!-- ── FEATURED: E-COMMERCE PLATFORM ── -->
     <div class="project-card featured reveal">
@@ -1448,19 +1558,18 @@
         <span class="avail-title">Available for opportunities</span>
       </div>
       <p class="avail-text">
-        I'm actively looking for data engineering roles where I can design and build real
-        pipelines on real infrastructure. I care most about companies working with
-        large-scale data, real-time systems, or cloud-native architectures — places where
-        the data work actually matters to the product.
+        I'm actively looking for ML engineering and data engineering roles where I can build
+        real systems on real infrastructure. Medical AI, real-time pipelines, cloud-native architectures —
+        places where the technical work directly shapes the product. I reply to every message.
       </p>
       <div style="display:flex;flex-direction:column;gap:6px;">
         <div class="avail-item">
           <div class="avail-bullet" style="background:var(--cyan);"></div>
-          Full-time data engineering roles
+          ML Engineer / Medical AI roles
         </div>
         <div class="avail-item">
           <div class="avail-bullet" style="background:var(--purple);"></div>
-          Freelance pipeline &amp; warehouse projects
+          Data Engineering &amp; pipeline roles
         </div>
         <div class="avail-item">
           <div class="avail-bullet" style="background:var(--amber);"></div>
@@ -1472,7 +1581,7 @@
 </section>
 
 <footer>
-  <span style="color:var(--cyan);font-weight:700;">ua</span>&nbsp;&nbsp;raw data is just potential — I turn it into answers&nbsp;&nbsp;·&nbsp;&nbsp;Umar Ahmad © 2026
+  <span style="color:var(--cyan);font-weight:700;">ua</span>&nbsp;&nbsp;raw data and raw tensors — I turn both into answers&nbsp;&nbsp;·&nbsp;&nbsp;Umar Ahmad © 2026
 </footer>
 
 <script>
