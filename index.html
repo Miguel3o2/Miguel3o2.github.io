@@ -915,8 +915,8 @@
     <div class="hero-role">// pipelines, models, and systems that actually ship</div>
     <p class="hero-desc">
       I design and build end-to-end data and ML systems — from real-time Kafka streams
-      and distributed Spark jobs to U-Net medical image segmentation models trained from scratch.
-      Nine production projects. Every one runs on real data.
+      and distributed Spark jobs to histopathology classifiers and U-Net segmentation models
+      trained from scratch. Eleven production projects. Every one runs on real data.
     </p>
     <div class="hero-btns">
       <a href="#projects" class="btn-primary">View Projects</a>
@@ -949,7 +949,7 @@
 
   <div class="stats-row reveal reveal-delay-3">
     <div class="stat-box">
-      <span class="stat-num" data-count="9">0</span>
+      <span class="stat-num" data-count="11">0</span>
       <span class="stat-label">Production Projects</span>
     </div>
     <div class="stat-box">
@@ -987,11 +987,12 @@
       </div>
       <div class="skill-tags">
         <span class="tag">PyTorch</span><span class="tag">U-Net</span>
-        <span class="tag">CNN</span><span class="tag">NIfTI</span>
-        <span class="tag">DICOM</span><span class="tag">nibabel</span>
-        <span class="tag">pydicom</span><span class="tag">Dice Loss</span>
-        <span class="tag">scikit-learn</span><span class="tag">NumPy</span>
-        <span class="tag">SciPy</span><span class="tag">Matplotlib</span>
+        <span class="tag">ResNet50</span><span class="tag">Transfer Learning</span>
+        <span class="tag">FastAPI</span><span class="tag">Data Augmentation</span>
+        <span class="tag">NIfTI</span><span class="tag">DICOM</span>
+        <span class="tag">nibabel</span><span class="tag">pydicom</span>
+        <span class="tag">Dice Loss</span><span class="tag">HU Windowing</span>
+        <span class="tag">scikit-learn</span><span class="tag">SciPy</span>
       </div>
     </div>
     <div class="skill-card">
@@ -1067,7 +1068,7 @@
 <section id="projects">
   <div class="section-label reveal">02 — Projects</div>
   <h2 class="section-title reveal reveal-delay-1">ML models, pipelines, and systems —<br>built from scratch, on real data</h2>
-  <p class="section-sub reveal reveal-delay-2">Two medical AI and IoT projects at the top. Everything below is production-grade data engineering — real APIs, real infrastructure, automated quality testing throughout.</p>
+  <p class="section-sub reveal reveal-delay-2">Medical AI models and IoT streaming at the top, production-grade data engineering throughout. Real APIs, real infrastructure, and automated quality testing on every project.</p>
 
   <div class="projects-grid">
 
@@ -1115,6 +1116,85 @@
           <span class="tag">NIfTI</span><span class="tag">NumPy</span>
           <span class="tag">SciPy</span><span class="tag">Matplotlib</span>
           <span class="tag">scikit-learn</span><span class="tag">Medical Segmentation Decathlon</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BREAST CANCER HISTOPATHOLOGY ── -->
+    <div class="project-card featured reveal reveal-delay-1">
+      <div class="featured-label">medical AI — classification + inference service</div>
+      <div class="project-header" style="background:linear-gradient(135deg,rgba(168,85,247,0.08),rgba(0,255,200,0.04));">
+        <div>
+          <div class="project-title">Breast Cancer Histopathology Classification</div>
+          <div class="project-date">Apr 2026</div>
+        </div>
+        <div class="project-badges">
+          <span class="badge purple">ResNet50</span>
+          <span class="badge purple">Transfer Learning</span>
+          <span class="badge cyan">FastAPI</span>
+          <span class="badge cyan">PyTorch</span>
+          <span class="badge green">0.962 sensitivity</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          A full histopathology classification pipeline for benign vs malignant patch detection using the BreakHis dataset.
+          Built with patient-level train/test splitting to prevent data leakage, augmentation-heavy training on ResNet50 with
+          transfer learning, and clinical evaluation metrics relevant to oncology workflows. Deployed as a FastAPI inference
+          service connected to the trained checkpoint for local serving.
+        </p>
+        <ul class="project-bullets">
+          <li>Patient-level splitting ensures no patient's patches appear in both train and test sets — critical for unbiased clinical evaluation and a common failure mode in naive histopathology pipelines</li>
+          <li>ResNet50 fine-tuned via transfer learning: frozen backbone in early epochs, progressive unfreezing — standard practice for small medical datasets with limited labelled examples</li>
+          <li>FastAPI inference service wraps the trained checkpoint, accepting JPEG patches and returning benign/malignant predictions with confidence scores for local clinical serving</li>
+          <li>Explored multimodal extensions: synthetic clinical feature generation, synthetic segmentation masks, and attention-based fusion components for future work</li>
+        </ul>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val g">0.848</span><span class="metric-name">accuracy</span></div>
+          <div class="metric"><span class="metric-val p">0.962</span><span class="metric-name">sensitivity</span></div>
+          <div class="metric"><span class="metric-val">0.901</span><span class="metric-name">F1 score</span></div>
+          <div class="metric"><span class="metric-val a">0.870</span><span class="metric-name">ROC-AUC</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Python</span><span class="tag">PyTorch</span>
+          <span class="tag">ResNet50</span><span class="tag">Transfer Learning</span>
+          <span class="tag">FastAPI</span><span class="tag">BreakHis</span>
+          <span class="tag">Data Augmentation</span><span class="tag">scikit-learn</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── REMOTE SENSING SEGMENTATION ── -->
+    <div class="project-card reveal">
+      <div class="project-header purple-grad">
+        <div>
+          <div class="project-title">Remote Sensing Segmentation</div>
+          <div class="project-date">Apr 2026</div>
+        </div>
+        <div class="project-badges">
+          <span class="badge purple">Sparse Supervision</span>
+          <span class="badge cyan">PyTorch</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          A segmentation model trained on sparse point-level annotations — a realistic constraint in remote sensing
+          where pixel-level ground truth is expensive to obtain. Implemented a custom loss function for partial supervision
+          and ran systematic experiments on annotation sampling strategies and label efficiency under GPU memory constraints.
+        </p>
+        <ul class="project-bullets">
+          <li>Custom loss function for partial supervision: only annotated pixels contribute to gradient updates, enabling training with sparse point labels rather than dense masks</li>
+          <li>Experiments on sampling strategies evaluated how annotation density and spatial distribution affect convergence and final IoU</li>
+          <li>GPU memory optimisation: gradient checkpointing and mixed-precision training to fit large remote sensing tiles within VRAM budget</li>
+        </ul>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val p">Sparse</span><span class="metric-name">point supervision</span></div>
+          <div class="metric"><span class="metric-val a">Custom</span><span class="metric-name">loss function</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Python</span><span class="tag">PyTorch</span>
+          <span class="tag">Remote Sensing</span><span class="tag">Custom Loss</span>
+          <span class="tag">Mixed Precision</span><span class="tag">NumPy</span>
         </div>
       </div>
     </div>
@@ -1452,13 +1532,13 @@
         <div class="exp-line"></div>
       </div>
       <div class="exp-content">
-        <div class="exp-role">Data Collector &amp; Team Lead</div>
-        <div class="exp-company">Annotto — Remote</div>
+        <div class="exp-role">Data Annotation Specialist</div>
+        <div class="exp-company">Annotto — Islamabad</div>
         <div class="exp-date">Oct 2025 – Present</div>
         <ul class="exp-points">
-          <li>Led a team of 20+ annotators labelling thousands of images and video frames for AI/ML training datasets, owning quality standards and delivery timelines.</li>
           <li>Contributed to development of screen recording software that captures in-game actions as structured data for model training pipelines.</li>
-          <li>Trained multiple AI models across several game titles, coordinating task assignment and managing throughput across the team.</li>
+          <li>Annotated and validated gameplay footage across multiple game titles, directly supporting the training and improvement of game AI models.</li>
+          <li>Trained multiple AI models on various games; coordinated task assignment and tracked team output to ensure consistent delivery and annotation quality across titles.</li>
         </ul>
       </div>
     </div>
@@ -1469,13 +1549,12 @@
         <div class="exp-line"></div>
       </div>
       <div class="exp-content">
-        <div class="exp-role">Junior Web Developer</div>
-        <div class="exp-company">TKnack Digital Agency — Islamabad</div>
-        <div class="exp-date">May 2025 – Oct 2025</div>
+        <div class="exp-role">Frontend Engineer</div>
+        <div class="exp-company">99Digital Agency — Islamabad</div>
+        <div class="exp-date">Feb 2025 – Sep 2025</div>
         <ul class="exp-points">
-          <li>Designed and managed PostgreSQL databases across multiple client projects — writing queries, building schemas, and handling data migrations.</li>
-          <li>Integrated content management workflows using Strapi and Zoho CRM, enabling non-technical stakeholders to manage data independently.</li>
-          <li>Built API integrations connecting frontend interfaces to backend data sources, working across the full stack on production client sites.</li>
+          <li>Integrated REST APIs into the frontend to fetch and display dynamic data, collaborating closely with backend developers to understand server-side workflows and API design.</li>
+          <li>Strengthened skills in state management, responsive layouts, and component structuring while debugging and optimising frontend performance in a production-like environment.</li>
         </ul>
       </div>
     </div>
@@ -1483,30 +1562,15 @@
     <div class="exp-item reveal reveal-delay-2">
       <div class="exp-dot-col">
         <div class="exp-dot"></div>
-        <div class="exp-line"></div>
       </div>
       <div class="exp-content">
-        <div class="exp-role">Junior Front-end Engineer</div>
-        <div class="exp-company">99digital Agency — Remote</div>
-        <div class="exp-date">Feb 2025 – May 2025</div>
-        <ul class="exp-points">
-          <li>Built the complete frontend for a large-scale website from scratch — handling component architecture, state management, responsive layouts, and REST API integration end-to-end.</li>
-          <li>Delivered in a remote production environment, which sharpened habits around code clarity, Git discipline, and async communication.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="exp-item reveal reveal-delay-3">
-      <div class="exp-dot-col">
-        <div class="exp-dot"></div>
-      </div>
-      <div class="exp-content">
-        <div class="exp-role">Junior Front-end Intern</div>
+        <div class="exp-role">Web Developer</div>
         <div class="exp-company">TKnack Digital Agency — Islamabad</div>
         <div class="exp-date">Aug 2024 – Feb 2025</div>
         <ul class="exp-points">
-          <li>Implemented UI components and resolved styling issues across multiple live client projects using Tailwind CSS.</li>
-          <li>Worked closely with senior developers, building solid foundations in Git workflows, code review, and collaborative development practices.</li>
+          <li>Integrated content into CRMs including Strapi and Zoho, enabling dynamic content management for client sites.</li>
+          <li>Gained experience in API integration and database connectivity, bridging frontend and backend across multiple live projects.</li>
+          <li>Collaborated with senior developers, building foundations in Git workflows, component reusability, and responsive utilities.</li>
         </ul>
       </div>
     </div>
