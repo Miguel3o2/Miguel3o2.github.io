@@ -871,6 +871,17 @@
     letter-spacing: 0.05em;
   }
 
+  /* ── INLINE CODE ── */
+  .project-bullets code {
+    font-family: var(--mono);
+    font-size: 11px;
+    background: rgba(0,255,200,0.08);
+    color: var(--cyan);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid rgba(0,255,200,0.15);
+  }
+
   /* ── SCROLLBAR ── */
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
@@ -915,8 +926,9 @@
     <div class="hero-role">// pipelines, models, and systems that actually ship</div>
     <p class="hero-desc">
       I design and build end-to-end data and ML systems — from real-time Kafka streams
-      and distributed Spark jobs to histopathology classifiers and U-Net segmentation models
-      trained from scratch. Eleven production projects. Every one runs on real data.
+      and distributed Spark jobs to histopathology classifiers and U-Net segmentation models trained
+      from scratch. I also engineer the Linux infrastructure that runs it all: Nginx, Ansible, Docker, Prometheus.
+      Fourteen production projects. Every one runs on real data.
     </p>
     <div class="hero-btns">
       <a href="#projects" class="btn-primary">View Projects</a>
@@ -949,7 +961,7 @@
 
   <div class="stats-row reveal reveal-delay-3">
     <div class="stat-box">
-      <span class="stat-num" data-count="11">0</span>
+      <span class="stat-num" data-count="14">0</span>
       <span class="stat-label">Production Projects</span>
     </div>
     <div class="stat-box">
@@ -1031,6 +1043,21 @@
         <span class="tag">Zoho CRM</span>
       </div>
     </div>
+    <div class="skill-card">
+      <div class="skill-card-header">
+        <div class="skill-icon amber">OPS</div>
+        <span class="skill-card-title">Infrastructure &amp; DevOps</span>
+      </div>
+      <div class="skill-tags">
+        <span class="tag">Linux (Ubuntu)</span><span class="tag">Nginx</span>
+        <span class="tag">Apache</span><span class="tag">iptables / ufw</span>
+        <span class="tag">Ansible</span><span class="tag">Jenkins</span>
+        <span class="tag">Prometheus</span><span class="tag">Grafana</span>
+        <span class="tag">Supabase</span><span class="tag">Bash scripting</span>
+        <span class="tag">cron</span><span class="tag">MariaDB</span>
+        <span class="tag">SSH hardening</span><span class="tag">Portainer</span>
+      </div>
+    </div>
   </div>
 
   <div class="pipeline-wrap reveal">
@@ -1068,7 +1095,7 @@
 <section id="projects">
   <div class="section-label reveal">02 — Projects</div>
   <h2 class="section-title reveal reveal-delay-1">ML models, pipelines, and systems —<br>built from scratch, on real data</h2>
-  <p class="section-sub reveal reveal-delay-2">Medical AI models and IoT streaming at the top, production-grade data engineering throughout. Real APIs, real infrastructure, and automated quality testing on every project.</p>
+  <p class="section-sub reveal reveal-delay-2">Medical AI, real-time data pipelines, a full SaaS analytics platform with Supabase, and a complete Linux sysadmin lab — built from scratch on real infrastructure, every project.</p>
 
   <div class="projects-grid">
 
@@ -1195,6 +1222,106 @@
           <span class="tag">Python</span><span class="tag">PyTorch</span>
           <span class="tag">Remote Sensing</span><span class="tag">Custom Loss</span>
           <span class="tag">Mixed Precision</span><span class="tag">NumPy</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FEATURED: MERIDIAN SAAS ANALYTICS PLATFORM ── -->
+    <div class="project-card featured reveal">
+      <div class="featured-label">full-stack data platform — Supabase + Kafka + Spark + dbt + ML</div>
+      <div class="project-header" style="background:linear-gradient(135deg,rgba(0,255,200,0.07),rgba(168,85,247,0.05));">
+        <div>
+          <div class="project-title">Meridian — SaaS Analytics &amp; Churn Intelligence Platform</div>
+          <div class="project-date">Apr – May 2026</div>
+        </div>
+        <div class="project-badges">
+          <span class="badge cyan">Supabase</span>
+          <span class="badge cyan">Kafka</span>
+          <span class="badge cyan">Spark</span>
+          <span class="badge purple">dbt</span>
+          <span class="badge purple">Airflow</span>
+          <span class="badge amber">ML Scoring</span>
+          <span class="badge green">Reverse ETL</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          End-to-end multi-tenant SaaS data platform that ingests every operational event from a live Supabase PostgreSQL
+          database via pg_logical CDC, validates it with Pydantic V2 contracts, streams it through Kafka into a
+          Medallion data lake, computes MRR movements, cohort retention, and churn scores using dbt and a calibrated ML
+          model, then writes scored results back to Supabase via Reverse ETL — closing the loop to a TypeScript Deno
+          Edge Function that fires Slack CSM alerts for critical-risk tenants. Built with a full Docker Compose local
+          stack including Kafka KRaft, Airflow, Spark, and Portainer.
+        </p>
+        <ul class="project-bullets">
+          <li>Supabase CDC via pg_logical replication → Pydantic V2 discriminated union contract validation → gzip idempotent Kafka → Spark Structured Streaming Bronze (watermarked foreachBatch with DLQ routing) → Delta Lake Silver (SCD Type 2 MERGE on tenants and subscriptions) → Gold (MRR waterfall, 52-week cohort retention, feature adoption)</li>
+          <li>dbt analytics layer: 20-feature churn feature store in pure SQL, incremental MRR waterfall model, cohort retention table with benchmark labels, 4 custom SQL data tests (week-0 identity, completeness, staleness, orphan detection) — all running in the daily_batch Airflow DAG</li>
+          <li>Calibrated logistic regression churn scorer (CalibratedClassifierCV) reports both AUROC and Brier score; idempotent batch UPSERT Reverse ETL writes scored risk tiers back to Supabase analytics schema via parallel thread pool</li>
+          <li>3 Airflow DAGs: 5-minute streaming_health with Kafka lag alerting, daily_batch diamond-dependency pipeline (Silver fans to Gold + Hadoop MapReduce in parallel, converges on dbt + ML), data_quality DAG with PagerDuty SLA callbacks and custom row-count assertions</li>
+        </ul>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val g">29</span><span class="metric-name">source files</span></div>
+          <div class="metric"><span class="metric-val p">3</span><span class="metric-name">Airflow DAGs</span></div>
+          <div class="metric"><span class="metric-val">20</span><span class="metric-name">ML features</span></div>
+          <div class="metric"><span class="metric-val a">4</span><span class="metric-name">custom dbt tests</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Supabase</span><span class="tag">pg_logical CDC</span>
+          <span class="tag">Pydantic V2</span><span class="tag">Apache Kafka</span>
+          <span class="tag">Spark Streaming</span><span class="tag">Delta Lake</span>
+          <span class="tag">dbt</span><span class="tag">Apache Airflow</span>
+          <span class="tag">scikit-learn</span><span class="tag">Reverse ETL</span>
+          <span class="tag">TypeScript / Deno</span><span class="tag">Docker Compose</span>
+          <span class="tag">PostgreSQL</span><span class="tag">Hadoop MapReduce</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SYSADMIN LAB ── -->
+    <div class="project-card featured reveal reveal-delay-1">
+      <div class="featured-label">linux infrastructure — full sysadmin practice environment</div>
+      <div class="project-header" style="background:linear-gradient(135deg,rgba(245,158,11,0.07),rgba(34,197,94,0.05));">
+        <div>
+          <div class="project-title">Linux SysAdmin Lab — Production Server Environment</div>
+          <div class="project-date">May 2026</div>
+        </div>
+        <div class="project-badges">
+          <span class="badge amber">Linux</span>
+          <span class="badge amber">Nginx</span>
+          <span class="badge amber">Ansible</span>
+          <span class="badge cyan">Docker</span>
+          <span class="badge cyan">Prometheus</span>
+          <span class="badge green">Grafana</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          A fully containerised Linux server environment that replicates a real production infrastructure — SSH-accessible
+          Ubuntu 22.04, Nginx with virtual hosts and reverse proxy config, Apache with PHP, MariaDB, PostgreSQL,
+          Prometheus/Grafana monitoring stack, Jenkins CI/CD, and Portainer. Accompanied by production-grade Bash and
+          Python scripts for user management, iptables firewall configuration, automated database backups, cron job
+          scheduling, service health monitoring with auto-restart logic, and security hardening via Ansible playbooks.
+        </p>
+        <ul class="project-bullets">
+          <li>10-container Docker Compose environment: lab-ubuntu (SSH, iptables, cron), Nginx, Apache+PHP, MariaDB, PostgreSQL, phpMyAdmin, Jenkins, Prometheus+node_exporter, Grafana, Portainer — all pre-seeded with realistic data and connected on a custom bridge network</li>
+          <li>6 Bash practice scripts covering user/group management, iptables/ufw firewall rules, port forwarding, automated mysqldump and pg_dump backups with gzip compression and 7-day rotation, cron job scheduling, and real-time service monitoring with auto-restart and log alerting</li>
+          <li>Python monitoring tool (psutil, requests, mysql-connector, psycopg2) and db_admin CLI covering backup, restore, user creation, slow query auditing, VACUUM ANALYZE, and table-size reporting across both databases</li>
+          <li>Ansible playbooks for full LAMP stack deployment (idempotent, with handlers and templated virtual host config) and CIS-aligned security hardening (SSH root disable, sysctl kernel parameters, SUID audit, password policy enforcement via PAM)</li>
+        </ul>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val a">10</span><span class="metric-name">containers</span></div>
+          <div class="metric"><span class="metric-val">6</span><span class="metric-name">Bash scripts</span></div>
+          <div class="metric"><span class="metric-val p">2</span><span class="metric-name">Ansible playbooks</span></div>
+          <div class="metric"><span class="metric-val g">CIS</span><span class="metric-name">hardened</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Ubuntu 22.04</span><span class="tag">Nginx</span>
+          <span class="tag">Apache</span><span class="tag">iptables / ufw</span>
+          <span class="tag">Ansible</span><span class="tag">Bash</span>
+          <span class="tag">Python</span><span class="tag">MariaDB</span>
+          <span class="tag">PostgreSQL</span><span class="tag">Jenkins</span>
+          <span class="tag">Prometheus</span><span class="tag">Grafana</span>
+          <span class="tag">Docker Compose</span><span class="tag">cron</span>
         </div>
       </div>
     </div>
@@ -1515,6 +1642,54 @@
       </div>
     </div>
 
+    <!-- ── COMPUTATIONAL ACCOUNTING / PYTHON BUDGETING ── -->
+    <div class="project-card featured reveal reveal-delay-1">
+      <div class="featured-label">academic research — computational accounting &amp; financial modelling</div>
+      <div class="project-header" style="background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(0,255,200,0.05));">
+        <div>
+          <div class="project-title">Python Static &amp; Flexible Budgeting Model</div>
+          <div class="project-date">May 2026</div>
+        </div>
+        <div class="project-badges">
+          <span class="badge amber">Management Accounting</span>
+          <span class="badge cyan">Python OOP</span>
+          <span class="badge cyan">pandas</span>
+          <span class="badge purple">Matplotlib</span>
+          <span class="badge green">Variance Analysis</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          A fully object-oriented Python framework implementing static and flexible budgeting with automated three-column
+          variance analysis — built as a Master's-level research artefact for the course
+          <em>Emerging Technologies in Accounting and Accountability</em> at the University of Parma.
+          Modelled on VeranoTex S.p.A., a fictitious Italian textile manufacturer, the system decomposes
+          every variance into its sales-volume and flexible-budget components, generates four professional
+          management-accounting visualisations, and produces a fully cited academic working paper
+          (5,000+ words, APA 7th edition) documenting the methodology and findings.
+        </p>
+        <ul class="project-bullets">
+          <li>Object-oriented architecture: <code>CostDriver</code>, <code>StaticBudget</code>, <code>FlexibleBudget</code>, <code>ActualResults</code>, and <code>VarianceAnalyser</code> classes implement the cost function C(q)&nbsp;=&nbsp;F&nbsp;+&nbsp;v·q with strict separation of data structures from analytical logic</li>
+          <li>Full three-column variance decomposition (Static → Flexible → Actual) isolating sales-volume variance from flexible-budget (price &amp; efficiency) variance — surfacing a +€30K favourable volume effect masked by a −€33.7K unfavourable efficiency shortfall</li>
+          <li>Four Matplotlib visualisations: grouped Budget-vs-Actual bar chart, Operating Income waterfall bridge, line-item cost-variance horizontal bar chart, and fixed/variable cost composition panel — all publication-ready at 150 DPI</li>
+          <li>Accompanied by a 5,000-word APA 7th edition scholarly working paper with embedded charts, two formatted variance tables, and 21 peer-reviewed citations — validated and submitted as a Master's research deliverable</li>
+        </ul>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val a">€33.7K</span><span class="metric-name">variance found</span></div>
+          <div class="metric"><span class="metric-val">4</span><span class="metric-name">chart types</span></div>
+          <div class="metric"><span class="metric-val p">21</span><span class="metric-name">citations</span></div>
+          <div class="metric"><span class="metric-val g">PEP 8</span><span class="metric-name">compliant</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Python</span><span class="tag">pandas</span>
+          <span class="tag">NumPy</span><span class="tag">Matplotlib</span>
+          <span class="tag">Dataclasses</span><span class="tag">OOP</span>
+          <span class="tag">Management Accounting</span><span class="tag">Variance Analysis</span>
+          <span class="tag">University of Parma</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1622,9 +1797,9 @@
         <span class="avail-title">Available for opportunities</span>
       </div>
       <p class="avail-text">
-        I'm actively looking for ML engineering and data engineering roles where I can build
-        real systems on real infrastructure. Medical AI, real-time pipelines, cloud-native architectures —
-        places where the technical work directly shapes the product. I reply to every message.
+        I'm actively looking for ML engineering, data engineering, and infrastructure roles where I can build
+        real systems on real infrastructure. Medical AI, real-time pipelines, cloud-native architectures,
+        Linux server administration — places where the technical work directly shapes the product. I reply to every message.
       </p>
       <div style="display:flex;flex-direction:column;gap:6px;">
         <div class="avail-item">
@@ -1634,6 +1809,10 @@
         <div class="avail-item">
           <div class="avail-bullet" style="background:var(--purple);"></div>
           Data Engineering &amp; pipeline roles
+        </div>
+        <div class="avail-item">
+          <div class="avail-bullet" style="background:var(--green);"></div>
+          Linux System / Infrastructure Admin
         </div>
         <div class="avail-item">
           <div class="avail-bullet" style="background:var(--amber);"></div>
