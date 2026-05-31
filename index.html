@@ -1079,9 +1079,56 @@
 <section id="projects">
   <div class="section-label reveal">02 — Projects</div>
   <h2 class="section-title reveal reveal-delay-1">ML models, pipelines, and systems —<br>built from scratch, on real data</h2>
-  <p class="section-sub reveal reveal-delay-2">A global logistics analytics platform at the top, followed by medical AI, IoT streaming, and production data engineering throughout. Real APIs, real infrastructure, automated quality testing on every project.</p>
+  <p class="section-sub reveal reveal-delay-2">Latest work: an autoencoder anomaly-detection lab for financial fraud and intrusion-style tabular data, followed by logistics, medical AI, IoT streaming, and production data engineering. Real APIs, real infrastructure, automated quality testing on every project.</p>
 
   <div class="projects-grid">
+
+    <!-- FEATURED: FINANCIAL FRAUD AUTOENCODER LAB -->
+    <div class="project-card featured reveal">
+      <div class="featured-label">latest project - anomaly detection + ML serving</div>
+      <div class="project-header" style="background:linear-gradient(135deg,rgba(239,68,68,0.08),rgba(0,255,200,0.05));">
+        <div>
+          <div class="project-title">Financial Fraud Autoencoder Lab</div>
+          <div class="project-date">May 2026</div>
+        </div>
+        <div class="project-badges">
+          <span class="badge cyan">Autoencoders</span>
+          <span class="badge purple">PyTorch</span>
+          <span class="badge green">FastAPI</span>
+          <span class="badge green">Streamlit</span>
+          <span class="badge purple">MLflow</span>
+          <span class="badge amber">Docker Compose</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">
+          End-to-end anomaly-detection platform for tabular financial fraud and network-intrusion style data.
+          The project generates configurable synthetic datasets, fits preprocessing only on normal training
+          records, trains five autoencoder architectures, evaluates reconstruction-error thresholds, and exposes
+          the trained models through both FastAPI inference and a Streamlit monitoring dashboard.
+        </p>
+        <ul class="project-bullets">
+          <li><strong>Five model families:</strong> Standard Autoencoder baseline, Sparse AE with L1 penalty, Variational Autoencoder with KL loss, LSTM Autoencoder for sequence reconstruction, and 1D Convolutional Autoencoder for local tabular patterns</li>
+          <li><strong>Shared evaluation layer:</strong> reconstruction error, percentile thresholding, AUROC, precision, recall, F1, confusion matrix, ROC curves, and saved model-level metrics for comparison</li>
+          <li><strong>Production-style serving:</strong> FastAPI endpoints for health checks, model discovery, single prediction, and CSV batch scoring; Streamlit dashboard for live scores, anomaly counts, model comparison, ROC curves, and PCA latent-space projection</li>
+          <li><strong>Ops-ready packaging:</strong> Python 3.11 virtual environment, pytest smoke tests, MLflow experiment tracking, saved artifacts, helper scripts, README documentation, and Docker Compose stack for API, dashboard, MLflow, and Postgres</li>
+        </ul>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val">5</span><span class="metric-name">AE models</span></div>
+          <div class="metric"><span class="metric-val g">1.00</span><span class="metric-name">AUROC best</span></div>
+          <div class="metric"><span class="metric-val p">4</span><span class="metric-name">services</span></div>
+          <div class="metric"><span class="metric-val a">2</span><span class="metric-name">frontends/API</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Python 3.11</span><span class="tag">PyTorch</span>
+          <span class="tag">scikit-learn</span><span class="tag">pandas</span>
+          <span class="tag">NumPy</span><span class="tag">FastAPI</span>
+          <span class="tag">Streamlit</span><span class="tag">MLflow</span>
+          <span class="tag">PostgreSQL</span><span class="tag">Docker Compose</span>
+          <span class="tag">pytest</span><span class="tag">Anomaly Detection</span>
+        </div>
+      </div>
+    </div>
 
     <!-- ── FEATURED: GLOBAL LOGISTICS PLATFORM ── -->
     <div class="project-card featured reveal">
